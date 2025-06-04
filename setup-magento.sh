@@ -1,24 +1,36 @@
 #!/bin/bash
 
-if [ ! -f /var/www/html/app/etc/env.php ]; then
-  echo "Installing Magento..."
-  php bin/magento setup:install \
-    --base-url=http://localhost/ \
-    --db-host=$MYSQLHOST \
-    --db-name=$MYSQL_DATABASE \
-    --db-user=$MYSQLUSER \
-    --db-password=$MYSQLPASSWORD \
-    --admin-firstname=Admin \
-    --admin-lastname=User \
-    --admin-email=admin@example.com \
-    --admin-user=admin \
-    --admin-password=Admin123 \
-    --language=en_US \
-    --currency=USD \
-    --timezone=America/Chicago \
-    --use-rewrites=1
-else
-  echo "Magento already installed"
-fi
+echo "Waiting for MySQL to be ready..."
+until mysqladmin ping -h"$MYSQL_HOST" --silent; do
+  sleep 2
+done
 
-php-fpm
+echo "Starting Magento installation..."
+
+php bin/magento setup:install \
+  --base-url="http://localhost/" \
+  --db-host="$MYSQL_HOST" \
+  --db-name="$MYSQL_DATABASE" \
+  --db-user="$MYSQL_USER" \
+  --db-password="$MYSQL_PASSWORD" \
+  --admin-firstname="Roman" \
+  --admin-lastname="Admin" \
+  --admin-email="admin@example.com" \
+  --admin-user="admin" \
+  --admin-password="admin123" \
+  --language="en_US" \
+  --currency="USD" \
+  --timezone="Europe/Kyiv" \
+  --use-rewrites="1" \
+  --backend-frontname="admin"
+
+echo "Magento installed successfully."
+
+# Додаткове налаштування
+php bin/magento module:enable --all
+php bin/magento setup:upgrade
+php bin/magento setup:di:compile
+php bin/magento cache:flush
+php bin/magento indexer:reindex
+
+echo "Setup complete."
