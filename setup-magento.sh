@@ -4,10 +4,10 @@ if [ ! -f /var/www/html/app/etc/env.php ]; then
   echo "Installing Magento..."
   php bin/magento setup:install \
     --base-url=http://localhost/ \
-    --db-host=$MYSQL_HOST \
+    --db-host=$MYSQLHOST \
     --db-name=$MYSQL_DATABASE \
-    --db-user=$MYSQL_USER \
-    --db-password=$MYSQL_PASSWORD \
+    --db-user=$MYSQLUSER \
+    --db-password=$MYSQLPASSWORD \
     --admin-firstname=Admin \
     --admin-lastname=User \
     --admin-email=admin@example.com \
