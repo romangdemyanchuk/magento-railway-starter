@@ -1,14 +1,15 @@
 #!/bin/bash
 
-echo "Waiting for MySQL to be ready..."
-until mysqladmin ping -h"$MYSQL_HOST" --silent; do
+# Очікуємо доступності MySQL
+echo "Waiting for MySQL to be ready at $MYSQL_HOST:3306..."
+until nc -z "$MYSQL_HOST" 3306; do
   sleep 2
 done
 
-echo "Starting Magento installation..."
+echo "MySQL is ready, starting Magento installation..."
 
 php bin/magento setup:install \
-  --base-url="http://localhost/" \
+  --base-url="https://$RAILWAY_STATIC_URL/" \
   --db-host="$MYSQL_HOST" \
   --db-name="$MYSQL_DATABASE" \
   --db-user="$MYSQL_USER" \
@@ -21,16 +22,13 @@ php bin/magento setup:install \
   --language="en_US" \
   --currency="USD" \
   --timezone="Europe/Kyiv" \
-  --use-rewrites="1" \
+  --use-rewrites=1 \
   --backend-frontname="admin"
 
-echo "Magento installed successfully."
-
-# Додаткове налаштування
 php bin/magento module:enable --all
 php bin/magento setup:upgrade
 php bin/magento setup:di:compile
 php bin/magento cache:flush
 php bin/magento indexer:reindex
 
-echo "Setup complete."
+echo "✅ Magento setup complete"
