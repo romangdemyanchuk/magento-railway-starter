@@ -6,10 +6,10 @@ services:
     ports:
       - "8080:80"
     environment:
-      MYSQL_HOST: db
-      MYSQL_DATABASE: magento
-      MYSQL_USER: magento
-      MYSQL_PASSWORD: magento123
+      MYSQL_HOST: mysql-edv_.railway.internal
+      MYSQL_DATABASE: railway
+      MYSQL_USER: root
+      MYSQL_PASSWORD: EIVQeevFffMPqatoaZvbkYzMUbJiqzGV
     depends_on:
       - db
 
