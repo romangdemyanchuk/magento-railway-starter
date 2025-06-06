@@ -1,6 +1,9 @@
 #!/bin/bash
 
 
+echo "DEBUG ENV:"
+env | grep MYSQL
+
 echo "DEBUG: MYSQL_HOST=$MYSQL_HOST"
 echo "DEBUG: MYSQL_PORT=$MYSQL_PORT"
 echo "DEBUG: MYSQL_DATABASE=$MYSQL_DATABASE"
