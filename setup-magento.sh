@@ -1,5 +1,12 @@
 #!/bin/bash
 
+
+echo "DEBUG: MYSQL_HOST=$MYSQL_HOST"
+echo "DEBUG: MYSQL_PORT=$MYSQL_PORT"
+echo "DEBUG: MYSQL_DATABASE=$MYSQL_DATABASE"
+echo "DEBUG: MYSQL_USER=$MYSQL_USER"
+echo "DEBUG: MYSQL_PASSWORD=$MYSQL_PASSWORD"
+
 # Очікуємо доступності MySQL
 echo "Waiting for MySQL to be ready at $MYSQL_HOST:3306..."
 until nc -z "$MYSQL_HOST" 3306; do
